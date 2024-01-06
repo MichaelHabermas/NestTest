@@ -7,12 +7,14 @@ import { CustomerService } from './customer/customer.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaService } from './prisma/prisma.service';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
     CustomerModule,
     PrismaModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    ProductModule,
   ],
   controllers: [AppController, CustomerController],
   providers: [AppService, CustomerService, PrismaService],
