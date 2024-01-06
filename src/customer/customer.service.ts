@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-interface ICustomer {
+export interface ICustomer {
     id: number,
     name: string,
     acctNumber: number,
