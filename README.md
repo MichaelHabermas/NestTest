@@ -71,3 +71,8 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## Stuff
+Run prisma db pull to turn your database schema into a Prisma schema.
+Run prisma generate to generate the Prisma Client. You can then start querying your database.
+
