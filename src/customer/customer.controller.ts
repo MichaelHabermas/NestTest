@@ -1,4 +1,13 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { CustomerDto } from './dto';
 import { Prisma } from '@prisma/client';
@@ -32,5 +41,27 @@ export class CustomerController {
     @Param('name') name: string,
   ): Prisma.Prisma__CustomerClient<CustomerDto | null, null, DefaultArgs> {
     return this.customerService.getCustomerByName(name);
+  }
+
+  @Post()
+  addNewCustomer(
+    @Body() newCustomer: CustomerDto,
+  ): Prisma.Prisma__CustomerClient<CustomerDto, never, DefaultArgs> {
+    return this.customerService.addNewCustomer(newCustomer);
+  }
+
+  @Patch()
+  updateCustomer(
+    @Body() acctNumber: number,
+    updatedCustomerData: Omit<Partial<CustomerDto>, 'acctNumber'>,
+  ): Prisma.Prisma__CustomerClient<CustomerDto, never, DefaultArgs> {
+    return this.customerService.updateCustomer(acctNumber, updatedCustomerData);
+  }
+
+  @Delete('delete/:acctNumber')
+  removeCustomerByAccountNumber(
+    @Param('acctNumber', ParseIntPipe) acctNumber: number,
+  ): Prisma.Prisma__CustomerClient<CustomerDto, never, DefaultArgs> {
+    return this.customerService.removeCustomerByAccountNumber(acctNumber);
   }
 }

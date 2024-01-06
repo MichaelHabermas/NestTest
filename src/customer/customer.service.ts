@@ -32,4 +32,26 @@ export class CustomerService {
   ): Prisma.Prisma__CustomerClient<CustomerDto | null, null, DefaultArgs> {
     return this.prisma.customer.findFirst({ where: { name } });
   }
+
+  addNewCustomer(
+    newCustomer: CustomerDto,
+  ): Prisma.Prisma__CustomerClient<CustomerDto, never, DefaultArgs> {
+    return this.prisma.customer.create({ data: newCustomer });
+  }
+
+  updateCustomer(
+    acctNumber: number,
+    updatedCustomerData: Omit<Partial<CustomerDto>, 'acctNumber'>,
+  ): Prisma.Prisma__CustomerClient<CustomerDto, never, DefaultArgs> {
+    return this.prisma.customer.update({
+      where: { acctNumber },
+      data: updatedCustomerData,
+    });
+  }
+
+  removeCustomerByAccountNumber(
+    acctNumber: number,
+  ): Prisma.Prisma__CustomerClient<CustomerDto, never, DefaultArgs> {
+    return this.prisma.customer.delete({ where: { acctNumber } });
+  }
 }
