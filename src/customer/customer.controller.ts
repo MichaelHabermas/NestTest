@@ -16,7 +16,7 @@ export class CustomerController {
   }
 
   @Get('acctNum/:acctNum')
-  getCustomerByAccountNumber(acctNum: number): ICustomer | undefined {
+  getCustomerByAccountNumber(@Param('acctNum', ParseIntPipe) acctNum: number): ICustomer | undefined {
     return this.customerService.getCustomerByAccountNumber(acctNum);
   }
 }
