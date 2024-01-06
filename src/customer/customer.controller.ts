@@ -50,10 +50,10 @@ export class CustomerController {
     return this.customerService.addNewCustomer(newCustomer);
   }
 
-  @Patch()
+  @Patch('patch/:acctNumber')
   updateCustomer(
-    @Body() acctNumber: number,
-    updatedCustomerData: Omit<Partial<CustomerDto>, 'acctNumber'>,
+    @Param('acctNumber', ParseIntPipe) acctNumber: number,
+    @Body() updatedCustomerData: Omit<Partial<CustomerDto>, 'acctNumber'>,
   ): Prisma.Prisma__CustomerClient<CustomerDto, never, DefaultArgs> {
     return this.customerService.updateCustomer(acctNumber, updatedCustomerData);
   }
