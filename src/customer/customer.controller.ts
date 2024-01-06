@@ -1,22 +1,22 @@
-import {Controller, Get} from '@nestjs/common';
-import {CustomerService, ICustomer} from "./customer.service";
+import {Controller, Get, Param, ParseIntPipe} from '@nestjs/common';
+import { CustomerService, ICustomer } from './customer.service';
 
-@Controller('customer')
+@Controller('customers')
 export class CustomerController {
-    constructor(private readonly customerService: CustomerService) {}
+  constructor(private readonly customerService: CustomerService) {}
 
-    @Get()
-    getCustomers(): ICustomer[] {
-        return this.customerService.getCustomers();
-    }
+  @Get()
+  getCustomers(): ICustomer[] {
+    return this.customerService.getCustomers();
+  }
 
-    @Get()
-    getCustomerByID(id: number): ICustomer | undefined {
-        return this.customerService.getCustomerByID(id);
-    }
+  @Get(':id')
+  getCustomerByID(@Param('id', ParseIntPipe) id: number): ICustomer | undefined {
+    return this.customerService.getCustomerByID(id);
+  }
 
-    @Get()
-    getCustomerByAccountNumber(acctNum: number): ICustomer | undefined {
-        return this.customerService.getCustomerByAccountNumber(acctNum);
-    }
+  @Get('acctNum/:acctNum')
+  getCustomerByAccountNumber(acctNum: number): ICustomer | undefined {
+    return this.customerService.getCustomerByAccountNumber(acctNum);
+  }
 }

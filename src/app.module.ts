@@ -10,5 +10,4 @@ import { CustomerService } from './customer/customer.service';
   controllers: [AppController, CustomerController],
   providers: [AppService, CustomerService],
 })
-
 export class AppModule {}
