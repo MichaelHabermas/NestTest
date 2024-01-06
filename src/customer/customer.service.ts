@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CustomerDto } from './dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { DefaultArgs } from '@prisma/client/runtime/library';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class CustomerService {
   constructor(private prisma: PrismaService) {}
 
-  async getCustomers(): Promise<CustomerDto[]> {
+  getCustomers(): Promise<CustomerDto[]> {
     try {
       return this.prisma.customer.findMany();
     } catch (e) {
@@ -15,15 +17,19 @@ export class CustomerService {
     }
   }
 
-  // getCustomerByID(id: number): CustomerDto | undefined {
-  //   return this.prisma.customer.find((customer) => customer.id === id);
-  // }
-  //
-  // getCustomerByAccountNumber(acctNum: number): CustomerDto | undefined {
-  //   return this.prisma.customer.find(({ acctNumber }) => acctNumber === acctNum);
-  // }
-  //
-  // getCustomerByName(name: string): CustomerDto | undefined {
-  //   return this.prisma.customer.find((customer) => customer.name === name);
-  // }
+  getCustomerByID(id: number): Promise<CustomerDto | undefined> {
+    return this.prisma.customer.findUniqueOrThrow({ where: { id } });
+  }
+
+  getCustomerByAccountNumber(
+    acctNumber: number,
+  ): Promise<CustomerDto | undefined> {
+    return this.prisma.customer.findUniqueOrThrow({ where: { acctNumber } });
+  }
+
+  getCustomerByName(
+    name: string,
+  ): Prisma.Prisma__CustomerClient<CustomerDto | null, null, DefaultArgs> {
+    return this.prisma.customer.findFirst({ where: { name } });
+  }
 }
