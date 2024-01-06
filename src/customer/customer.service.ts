@@ -39,4 +39,8 @@ export class CustomerService {
   getCustomerByAccountNumber(acctNum: number): ICustomer | undefined {
     return data.find(({ acctNumber }) => acctNumber === acctNum);
   }
+
+  getCustomerByName(name: string): ICustomer | undefined {
+    return data.find((customer) => customer.name === name);
+  }
 }

@@ -19,4 +19,9 @@ export class CustomerController {
   getCustomerByAccountNumber(@Param('acctNum', ParseIntPipe) acctNum: number): ICustomer | undefined {
     return this.customerService.getCustomerByAccountNumber(acctNum);
   }
+
+  @Get('name/:name')
+  getCustomerByName(@Param('name') name: string): ICustomer | undefined {
+    return this.customerService.getCustomerByName(name);
+  }
 }
