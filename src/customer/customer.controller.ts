@@ -14,4 +14,9 @@ export class CustomerController {
     getCustomerByID(id: number): ICustomer | undefined {
         return this.customerService.getCustomerByID(id);
     }
+
+    @Get()
+    getCustomerByAccountNumber(acctNum: number): ICustomer | undefined {
+        return this.customerService.getCustomerByAccountNumber(acctNum);
+    }
 }
