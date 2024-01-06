@@ -9,4 +9,9 @@ export class CustomerController {
     getCustomers(): ICustomer[] {
         return this.customerService.getCustomers();
     }
+
+    @Get()
+    getCustomerByID(id: number): ICustomer | undefined {
+        return this.customerService.getCustomerByID(id);
+    }
 }
