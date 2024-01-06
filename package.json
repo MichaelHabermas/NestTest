@@ -7,6 +7,12 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
+    "db:dev:up": "docker compose up dev-db -d",
+    "db:dev:rm": "docker compose rm dev-db -s -f -v",
+    "db:dev:restart": "npm run db:dev:rm && npm run db:dev:up",
+    "db:test:up": "docker compose up test-db -d",
+    "db:test:rm": "docker compose rm test-db -s -f -v",
+    "db:test:restart": "npm run db:test:rm && npm run db:test:up",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
