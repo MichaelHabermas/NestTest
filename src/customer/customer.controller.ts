@@ -53,8 +53,11 @@ export class CustomerController {
   @Patch('patch/:acctNumber')
   updateCustomer(
     @Param('acctNumber', ParseIntPipe) acctNumber: number,
-    @Body() updatedCustomerData: Omit<Partial<CustomerDto>, 'acctNumber'>,
+    @Body() updatedCustomerData: Partial<CustomerDto>,
   ): Prisma.Prisma__CustomerClient<CustomerDto, never, DefaultArgs> {
+    if (updatedCustomerData.acctNumber !== undefined) {
+      throw new Error('Cannot update Account Number');
+    }
     return this.customerService.updateCustomer(acctNumber, updatedCustomerData);
   }
 
