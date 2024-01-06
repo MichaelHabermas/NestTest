@@ -1,4 +1,4 @@
-import {Controller, Get, Param, ParseIntPipe} from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { CustomerService, ICustomer } from './customer.service';
 
 @Controller('customers')
@@ -11,12 +11,16 @@ export class CustomerController {
   }
 
   @Get(':id')
-  getCustomerByID(@Param('id', ParseIntPipe) id: number): ICustomer | undefined {
+  getCustomerByID(
+    @Param('id', ParseIntPipe) id: number,
+  ): ICustomer | undefined {
     return this.customerService.getCustomerByID(id);
   }
 
   @Get('acctNum/:acctNum')
-  getCustomerByAccountNumber(@Param('acctNum', ParseIntPipe) acctNum: number): ICustomer | undefined {
+  getCustomerByAccountNumber(
+    @Param('acctNum', ParseIntPipe) acctNum: number,
+  ): ICustomer | undefined {
     return this.customerService.getCustomerByAccountNumber(acctNum);
   }
 
