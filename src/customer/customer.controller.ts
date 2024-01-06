@@ -1,31 +1,32 @@
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
-import { CustomerService, ICustomer } from './customer.service';
+import { CustomerService } from './customer.service';
+import { CustomerDto } from './dto';
 
 @Controller('customers')
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
   @Get()
-  getCustomers(): ICustomer[] {
+  getCustomers(): Promise<CustomerDto[]> {
     return this.customerService.getCustomers();
   }
 
-  @Get(':id')
-  getCustomerByID(
-    @Param('id', ParseIntPipe) id: number,
-  ): ICustomer | undefined {
-    return this.customerService.getCustomerByID(id);
-  }
-
-  @Get('acctNum/:acctNum')
-  getCustomerByAccountNumber(
-    @Param('acctNum', ParseIntPipe) acctNum: number,
-  ): ICustomer | undefined {
-    return this.customerService.getCustomerByAccountNumber(acctNum);
-  }
-
-  @Get('name/:name')
-  getCustomerByName(@Param('name') name: string): ICustomer | undefined {
-    return this.customerService.getCustomerByName(name);
-  }
+  // @Get(':id')
+  // getCustomerByID(
+  //   @Param('id', ParseIntPipe) id: number,
+  // ): CustomerDto | undefined {
+  //   return this.customerService.getCustomerByID(id);
+  // }
+  //
+  // @Get('acctNum/:acctNum')
+  // getCustomerByAccountNumber(
+  //   @Param('acctNum', ParseIntPipe) acctNum: number,
+  // ): CustomerDto | undefined {
+  //   return this.customerService.getCustomerByAccountNumber(acctNum);
+  // }
+  //
+  // @Get('name/:name')
+  // getCustomerByName(@Param('name') name: string): CustomerDto | undefined {
+  //   return this.customerService.getCustomerByName(name);
+  // }
 }

@@ -1,46 +1,29 @@
 import { Injectable } from '@nestjs/common';
-
-export interface ICustomer {
-  id: number;
-  name: string;
-  acctNumber: number;
-}
-
-const data: ICustomer[] = [
-  {
-    id: 1,
-    name: 'Bob Be',
-    acctNumber: 356789,
-  },
-  {
-    id: 2,
-    name: 'Helen Sue',
-    acctNumber: 425727,
-  },
-  {
-    id: 3,
-    name: 'Jimmy Dean',
-    acctNumber: 247966,
-  },
-];
+import { CustomerDto } from './dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class CustomerService {
-  constructor() {}
+  constructor(private prisma: PrismaService) {}
 
-  getCustomers(): ICustomer[] {
-    return data;
+  async getCustomers(): Promise<CustomerDto[]> {
+    try {
+      return this.prisma.customer.findMany();
+    } catch (e) {
+      console.error('Cant get those customers', e);
+      throw e;
+    }
   }
 
-  getCustomerByID(id: number): ICustomer | undefined {
-    return data.find((customer) => customer.id === id);
-  }
-
-  getCustomerByAccountNumber(acctNum: number): ICustomer | undefined {
-    return data.find(({ acctNumber }) => acctNumber === acctNum);
-  }
-
-  getCustomerByName(name: string): ICustomer | undefined {
-    return data.find((customer) => customer.name === name);
-  }
+  // getCustomerByID(id: number): CustomerDto | undefined {
+  //   return this.prisma.customer.find((customer) => customer.id === id);
+  // }
+  //
+  // getCustomerByAccountNumber(acctNum: number): CustomerDto | undefined {
+  //   return this.prisma.customer.find(({ acctNumber }) => acctNumber === acctNum);
+  // }
+  //
+  // getCustomerByName(name: string): CustomerDto | undefined {
+  //   return this.prisma.customer.find((customer) => customer.name === name);
+  // }
 }
