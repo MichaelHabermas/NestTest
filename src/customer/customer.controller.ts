@@ -10,43 +10,38 @@ import {
 } from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { CustomerDto } from './dto';
-import { Prisma } from '@prisma/client';
-import { DefaultArgs } from '@prisma/client/runtime/library';
+import { PrismaGet, PrismaPost } from '../types';
 
 @Controller('customers')
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
   @Get()
-  getCustomers(): Promise<CustomerDto[]> {
+  getCustomers(): PrismaGet<CustomerDto[]> {
     return this.customerService.getCustomers();
   }
 
   @Get(':id')
   getCustomerByID(
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<CustomerDto | undefined> {
+  ): PrismaGet<CustomerDto> {
     return this.customerService.getCustomerByID(id);
   }
 
   @Get('acctNum/:acctNum')
   getCustomerByAccountNumber(
     @Param('acctNum', ParseIntPipe) acctNum: number,
-  ): Promise<CustomerDto | undefined> {
+  ): PrismaGet<CustomerDto> {
     return this.customerService.getCustomerByAccountNumber(acctNum);
   }
 
   @Get('name/:name')
-  getCustomerByName(
-    @Param('name') name: string,
-  ): Prisma.Prisma__CustomerClient<CustomerDto | null, null, DefaultArgs> {
+  getCustomerByName(@Param('name') name: string): PrismaGet<CustomerDto> {
     return this.customerService.getCustomerByName(name);
   }
 
   @Post()
-  addNewCustomer(
-    @Body() newCustomer: CustomerDto,
-  ): Prisma.Prisma__CustomerClient<CustomerDto, never, DefaultArgs> {
+  addNewCustomer(@Body() newCustomer: CustomerDto): PrismaPost<CustomerDto> {
     return this.customerService.addNewCustomer(newCustomer);
   }
 
@@ -54,7 +49,7 @@ export class CustomerController {
   updateCustomer(
     @Param('acctNumber', ParseIntPipe) acctNumber: number,
     @Body() updatedCustomerData: Partial<CustomerDto>,
-  ): Prisma.Prisma__CustomerClient<CustomerDto, never, DefaultArgs> {
+  ): PrismaPost<CustomerDto> {
     if (updatedCustomerData.acctNumber !== undefined) {
       throw new Error('Cannot update Account Number');
     }
@@ -64,7 +59,7 @@ export class CustomerController {
   @Delete('delete/:acctNumber')
   removeCustomerByAccountNumber(
     @Param('acctNumber', ParseIntPipe) acctNumber: number,
-  ): Prisma.Prisma__CustomerClient<CustomerDto, never, DefaultArgs> {
+  ): PrismaPost<CustomerDto> {
     return this.customerService.removeCustomerByAccountNumber(acctNumber);
   }
 }

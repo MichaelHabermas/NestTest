@@ -20,6 +20,7 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint-fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "push:changes": "npm run lint-fix && git add . && git commit -m \"testing generate resource product\" && git push",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
