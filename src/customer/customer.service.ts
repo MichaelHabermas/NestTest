@@ -1,15 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { CustomerDto } from './dto';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrismaGet, PrismaPost } from '../types';
 
 @Injectable()
 export class CustomerService {
-  constructor(private prisma: PrismaService) {}
+  protected customer: Prisma.CustomerDelegate;
+
+  constructor(private prisma: PrismaService) {
+    this.customer = prisma.customer;
+  }
 
   getCustomers(): PrismaGet<CustomerDto[]> {
     try {
-      return this.prisma.customer.findMany();
+      return this.customer.findMany();
     } catch (e) {
       console.error('Cant get those customers', e);
       throw e;
@@ -17,32 +22,32 @@ export class CustomerService {
   }
 
   getCustomerByID(id: number): PrismaGet<CustomerDto> {
-    return this.prisma.customer.findUniqueOrThrow({ where: { id } });
+    return this.customer.findUniqueOrThrow({ where: { id } });
   }
 
   getCustomerByAccountNumber(acctNumber: number): PrismaGet<CustomerDto> {
-    return this.prisma.customer.findUniqueOrThrow({ where: { acctNumber } });
+    return this.customer.findUniqueOrThrow({ where: { acctNumber } });
   }
 
   getCustomerByName(name: string): PrismaGet<CustomerDto> {
-    return this.prisma.customer.findFirst({ where: { name } });
+    return this.customer.findFirst({ where: { name } });
   }
 
   addNewCustomer(newCustomer: CustomerDto): PrismaPost<CustomerDto> {
-    return this.prisma.customer.create({ data: newCustomer });
+    return this.customer.create({ data: newCustomer });
   }
 
   updateCustomer(
     acctNumber: number,
     updatedCustomerData: Omit<Partial<CustomerDto>, 'acctNumber'>,
   ): PrismaPost<CustomerDto> {
-    return this.prisma.customer.update({
+    return this.customer.update({
       where: { acctNumber },
       data: updatedCustomerData,
     });
   }
 
   removeCustomerByAccountNumber(acctNumber: number): PrismaPost<CustomerDto> {
-    return this.prisma.customer.delete({ where: { acctNumber } });
+    return this.customer.delete({ where: { acctNumber } });
   }
 }
