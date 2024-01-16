@@ -14,10 +14,13 @@ model Customer {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   acctNumber Int @unique
   name String
   email String @unique
   password String
+
+  hash  String
 
   @@map("customers") // name of table
 }
