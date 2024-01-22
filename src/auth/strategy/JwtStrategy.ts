@@ -20,7 +20,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     const customer = await this.prisma.customer.findUnique({
       where: { id: payload.sub },
     });
-    delete customer?.hash;
+
+    delete customer.password;
+
     return customer;
   }
 }

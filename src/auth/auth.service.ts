@@ -16,17 +16,13 @@ export class AuthService {
 
   async signUp(dto: AuthDto) {
     try {
-      const hash = await argon.hash(dto.password);
+      const password = await argon.hash(dto.password);
 
       const customer = await this.prisma.customer.create({
-        data: {
-          email: dto.email,
-          hash,
-        },
+        data: { email: dto.email, password: password },
       });
 
-      // TODO: add more elegant solution (Transforms) later
-      delete customer.hash;
+      delete customer?.password; // TODO: add more elegant solution (Transforms) later
 
       return customer;
     } catch (error) {
@@ -37,5 +33,40 @@ export class AuthService {
       }
       throw error;
     }
+  }
+
+  async signToken(
+    customerId: number,
+    email: string,
+  ): Promise<{ access_token: string }> {
+    const payload = { sub: customerId, email };
+    const secret = this.config.get('JWT_SECRET');
+
+    const token = await this.jwt.signAsync(payload, {
+      expiresIn: '15m',
+      secret: secret,
+    });
+
+    return { access_token: token };
+  }
+
+  async signIn(dto: AuthDto) {
+    const customer = await this.prisma.customer.findUnique({
+      where: { email: dto.email },
+    });
+
+    if (!customer) {
+      throw new ForbiddenException('Credentials incorrect');
+    }
+
+    const pwMatches = await argon.verify(customer.password, dto.password);
+
+    if (!pwMatches) {
+      throw new ForbiddenException('Credentials incorrect');
+    }
+
+    delete customer.password;
+
+    return this.signToken(customer.id, customer.email);
   }
 }
